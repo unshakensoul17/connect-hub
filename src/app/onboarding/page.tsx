@@ -138,9 +138,6 @@ export default function OnboardingPage() {
                                             >
                                                 <option value="" disabled>Select Your College</option>
                                                 <option value="IITbombay-3432">IIT Bombay (IITB)</option>
-                                                <option value="NIT-Trichy">NIT Trichy</option>
-                                                <option value="DUIET-2024">DUIET Dibrugarh</option>
-                                                <option value="BITS-Pilani">BITS Pilani</option>
                                             </select>
                                         </div>
                                     </div>
