@@ -34,6 +34,7 @@ export interface Note {
     rating: number; // 0-5
     created_at: string;
     is_public: boolean;
+    college_id?: string;
 }
 
 export interface Question {

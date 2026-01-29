@@ -27,6 +27,7 @@ export interface Note {
     rating_avg: number;
     is_public: boolean;
     created_at: string;
+    college_id?: string;
 }
 
 export interface Question {
