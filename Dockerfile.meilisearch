@@ -1,0 +1,11 @@
+FROM getmeili/meilisearch:v1.10
+
+# Expose Meilisearch port
+EXPOSE 7700
+
+# Set the data directory
+ENV MEILI_DB_PATH=/meili_data
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:7700/health || exit 1

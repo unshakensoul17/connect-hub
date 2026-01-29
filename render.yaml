@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: campus-connect-meilisearch
+    runtime: image
+    plan: free
+    image:
+      url: docker.io/getmeili/meilisearch:v1.10
+    envVars:
+      - key: MEILI_MASTER_KEY
+        value: meilisearch-campus-connect-7k9x2p4w8q5n6m3v
+      - key: MEILI_ENV
+        value: production
+    healthCheckPath: /health
+    disk:
+      name: meilisearch-data
+      mountPath: /meili_data
+      sizeGB: 1

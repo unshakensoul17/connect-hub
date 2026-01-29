@@ -52,7 +52,9 @@ Since we are using Supabase for the primary database and Auth, the only "self-ho
 2. **Source**:
    - You can deploy directly from a public Docker image.
    - Select **"Deploy an existing image from a registry"**.
-   - Image URL: `getmeili/meilisearch:v1.10` (Check for latest stable version).
+   - **Image URL**: `docker.io/getmeili/meilisearch:v1.10` (Use full registry path!)
+   - **Alternative**: `docker.io/getmeili/meilisearch:latest` for latest stable version.
+   - ⚠️ **Important**: Use the full `docker.io/` prefix to avoid image pull errors.
 
 3. **Configuration**:
    - **Name**: `connect-hub-search-engine`
@@ -60,15 +62,24 @@ Since we are using Supabase for the primary database and Auth, the only "self-ho
    - **Instance Type**: Free (if available) or Starter.
 
 4. **Environment Variables**:
-   - Add the following variable:
-     - `MEILI_MASTER_KEY`: **Generate a strong random string** (at least 16 bytes). You will use this as `MEILISEARCH_MASTER_KEY` in your frontend.
+   - `MEILI_MASTER_KEY`: **REQUIRED**. Must be at least 16 characters. Meilisearch will crash if this is missing or too short.
+   - `MEILI_ENV`: `production`
 
-5. **Disk (Optional but Recommended)**:
+5. **Port Configuration (CRITICAL)**:
+   - In the Render Service Settings (or during creation), find the **"Port"** field.
+   - Set it to `7700`.
+   - *Reason*: Meilisearch runs on port 7700 by default. If Render looks for port 10000 (default), the deploy will fail/timeout.
+
+6. **Health Check Path**:
+   - Set the **Health Check Path** to `/health`.
+   - This ensures Render knows exactly when Meilisearch is ready.
+
+7. **Disk (Optional but Recommended)**:
    - For persistence (so you don't lose search data on restart), add a **Disk**.
    - Mount Path: `/meili_data`
    - Size: 1GB (or as needed).
 
-6. **Deploy**:
+8. **Deploy**:
    - Click **"Create Web Service"**.
    - Wait for the deployment to finish.
    - Copy the **Service URL** (e.g., `https://connect-hub-search.onrender.com`).
@@ -88,3 +99,54 @@ After both Frontend and Search are running:
 
 2. **Verify**:
    - Visit your site and try the search bar.
+
+---
+
+## Troubleshooting Meilisearch Deployment
+
+### Issue: "Image pull failed"
+
+**Cause**: Render cannot pull the Docker image.
+
+**Solutions**:
+1. **Use full registry path**: `docker.io/getmeili/meilisearch:v1.10` instead of just `getmeili/meilisearch:v1.10`
+2. **Try a specific version**: Use `v1.10` instead of `latest`
+3. **Use Blueprint deployment**: Push the `render.yaml` and `Dockerfile.meilisearch` to your repo, then deploy from Git
+
+### Issue: Service starts but health checks fail
+
+**Cause**: Render is checking the wrong port or path.
+
+**Solutions**:
+1. Ensure **Port** is set to `7700` in service settings
+2. Set **Health Check Path** to `/health`
+3. Add environment variable: `PORT=7700`
+
+### Issue: "MEILI_MASTER_KEY is missing or invalid"
+
+**Cause**: Master key is not set or is too short.
+
+**Solutions**:
+1. Set `MEILI_MASTER_KEY` to at least 16 characters
+2. Example: `my-super-secret-meilisearch-key-2024`
+
+### Issue: Data is lost on restart
+
+**Cause**: No persistent disk is configured.
+
+**Solutions**:
+1. Add a **Disk** in Render service settings
+2. Mount path: `/meili_data`
+3. Size: 1GB minimum
+
+### Alternative: Deploy from Git Repository
+
+If Docker image deployment keeps failing, you can deploy from your Git repository:
+
+1. Push `render.yaml` and `Dockerfile.meilisearch` to your repo
+2. In Render, select **"New +"** → **"Blueprint"**
+3. Connect your repository
+4. Render will automatically detect and deploy using the blueprint
+
+This approach is more reliable as Render builds the image itself.
+
