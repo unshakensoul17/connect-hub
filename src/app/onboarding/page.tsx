@@ -194,23 +194,6 @@ export default function OnboardingPage() {
                                         </select>
                                     </div>
                                 </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-xs font-medium text-gray-300 uppercase tracking-wider ml-1">Interested Subjects</label>
-                                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 min-h-[100px] flex flex-wrap gap-2 text-sm text-gray-400">
-                                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary border border-primary/20">Data Structures <button type="button" className="hover:text-white">×</button></div>
-                                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/20 text-secondary border border-secondary/20">Algorithms <button type="button" className="hover:text-white">×</button></div>
-                                        <span className="self-center italic opacity-50">Select from list below...</span>
-                                    </div>
-                                    {/* Mock Subject Picker */}
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                        {["Web Dev", "AI/ML", "Networking", "OS", "DBMS"].map(sub => (
-                                            <button key={sub} type="button" className="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs text-gray-300 transition-colors border border-white/5">
-                                                + {sub}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
                             </div>
                         )}
 
