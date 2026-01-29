@@ -126,11 +126,7 @@ export default function ProfilePage() {
 
             {/* Activity Section */}
             <div className="glass-card p-8">
-                <h2 className="text-xl font-bold text-white mb-4">My Activity</h2>
-                <div className="border-b border-white/10 flex gap-6 mb-6">
-                    <button className="pb-3 border-b-2 border-primary text-white font-medium">Recent Uploads</button>
-                    <button className="pb-3 border-b-2 border-transparent text-gray-400 hover:text-white">Bookmarks</button>
-                </div>
+                <h2 className="text-xl font-bold text-white mb-6">Recent Uploads</h2>
 
                 {recentNotes.length === 0 ? (
                     <div className="text-center py-10 text-gray-500 bg-white/5 rounded-xl border border-white/5 border-dashed">
