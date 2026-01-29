@@ -11,7 +11,3 @@ services:
       - key: MEILI_ENV
         value: production
     healthCheckPath: /health
-    disk:
-      name: meilisearch-data
-      mountPath: /meili_data
-      sizeGB: 1
