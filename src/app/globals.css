@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+}
+
+/* Custom Utilities for Glassmorphism */
+@utility glass {
+  @apply backdrop-blur-xl bg-white/10 border border-white/20 shadow-lg;
+}
+
+@utility glass-card {
+  @apply glass rounded-2xl hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1;
+}
+
+@utility glass-input {
+  @apply bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-gray-400 backdrop-blur-md;
+}
+
+@utility text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+:root {
+  /* Light Mode - Warm & Energetic */
+  --background: #fff7ed; /* Orange 50 */
+  --foreground: #1c1917; /* Stone 900 */
+  
+  --primary: #ea580c; /* Orange 600 */
+  --primary-foreground: #ffffff;
+  
+  --secondary: #ca8a04; /* Yellow 600 */
+  --secondary-foreground: #ffffff;
+  
+  --accent: #dc2626; /* Red 600 */
+  --accent-foreground: #ffffff;
+
+  --sidebar: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark Mode - Orange & Deep Black */
+    --background: #0c0a09; /* Stone 950 (warm black) */
+    --foreground: #fafaf9; /* Stone 50 */
+    
+    --primary: #fb923c; /* Orange 400 */
+    --primary-foreground: #0c0a09;
+    
+    --secondary: #facc15; /* Yellow 400 */
+    --secondary-foreground: #0c0a09;
+    
+    --accent: #f87171; /* Red 400 */
+    --accent-foreground: #ffffff;
+    
+    --sidebar: #0c0a09;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+@utility animate-scale-in {
+  animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bg-blobs {
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(234, 88, 12, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(250, 204, 21, 0.15), transparent 25%);
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
