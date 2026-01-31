@@ -62,7 +62,9 @@ export function ChatWithPDF({ noteId, noteTitle, fileUrl, isOpen, onClose }: Cha
                 if (!response.ok) throw new Error("Failed to download PDF from source");
 
                 const blob = await response.blob();
-                const file = new File([blob], noteTitle + ".pdf", { type: "application/pdf" });
+                // Add a unique suffix to avoid "Document already exists" errors
+                const uniqueName = `${noteTitle.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.pdf`;
+                const file = new File([blob], uniqueName, { type: "application/pdf" });
 
                 // Keep trying to ingest until it works or user cancels? 
                 // For now, just try once.
@@ -89,7 +91,11 @@ export function ChatWithPDF({ noteId, noteTitle, fileUrl, isOpen, onClose }: Cha
         setIngesting(true);
         setError(null);
         try {
-            const data = await RagApi.ingestPDF(file);
+            // Rename file to ensure uniqueness
+            const uniqueName = `${file.name.replace(".pdf", "")}_${Date.now()}.pdf`;
+            const uniqueFile = new File([file], uniqueName, { type: file.type });
+
+            const data = await RagApi.ingestPDF(uniqueFile);
             setDocumentId(data.document_id);
             setIsReady(true);
         } catch (err: any) {
