@@ -30,6 +30,7 @@ export default function NotesPage() {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [chatNoteId, setChatNoteId] = useState<string | null>(null);
     const [chatNoteTitle, setChatNoteTitle] = useState<string>("");
+    const [chatFileUrl, setChatFileUrl] = useState<string>("");
 
     useEffect(() => {
         async function fetchUser() {
@@ -59,9 +60,10 @@ export default function NotesPage() {
         setTimeout(() => setSearch(prev => prev.trim()), 100);
     };
 
-    const handleChat = (noteId: string, noteTitle: string) => {
+    const handleChat = (noteId: string, noteTitle: string, fileUrl: string) => {
         setChatNoteId(noteId);
         setChatNoteTitle(noteTitle);
+        setChatFileUrl(fileUrl);
         setIsChatOpen(true);
     };
 
@@ -76,12 +78,6 @@ export default function NotesPage() {
                     <p className="text-gray-400">Explore resources shared by your seniors.</p>
                 </div>
                 <div className="flex gap-2">
-                    <Link href="/demo/chatbot">
-                        <Button variant="outline" className="border-primary/50 text-white hover:bg-primary/10">
-                            <Sparkles className="w-4 h-4 mr-2 text-primary" />
-                            Try AI Demo
-                        </Button>
-                    </Link>
                     <Link href="/dashboard/upload">
                         <Button className="bg-primary text-white shadow-lg shadow-primary/25">
                             + Upload New
@@ -159,7 +155,7 @@ export default function NotesPage() {
                         result={result}
                         userId={user?.id || null}
                         onReview={() => handleReview(result.id, result.title)}
-                        onChat={() => handleChat(result.id, result.title)}
+                        onChat={() => handleChat(result.id, result.title, result.file_url)}
                     />
                 ))}
             </div>
@@ -181,6 +177,7 @@ export default function NotesPage() {
                 <ChatWithPDF
                     noteId={chatNoteId}
                     noteTitle={chatNoteTitle}
+                    fileUrl={chatFileUrl}
                     isOpen={isChatOpen}
                     onClose={() => setIsChatOpen(false)}
                 />

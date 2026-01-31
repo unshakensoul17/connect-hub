@@ -10,26 +10,42 @@ export interface PDFChunk {
     tokenCount: number;
 }
 
+// Polyfill Promise.withResolvers for older Node versions (required by pdfjs-dist)
+if (typeof Promise.withResolvers === 'undefined') {
+    // @ts-ignore
+    Promise.withResolvers = function () {
+        let resolve, reject;
+        const promise = new Promise((res, rej) => {
+            resolve = res;
+            reject = rej;
+        });
+        return { promise, resolve, reject };
+    };
+}
+
+// Polyfill standard browser APIs
+// These must be defined BEFORE importing pdfjs-dist
+// @ts-ignore
+if (typeof global.DOMMatrix === 'undefined') global.DOMMatrix = class DOMMatrix { };
+// @ts-ignore
+if (typeof global.ImageData === 'undefined') global.ImageData = class ImageData { };
+// @ts-ignore
+if (typeof global.Path2D === 'undefined') global.Path2D = class Path2D { };
+
 /**
  * Extract text from PDF buffer using pdfjs-dist
  */
 export async function extractTextFromPDF(pdfBuffer: Buffer): Promise<string> {
     try {
-        // Dynamically import pdfjs-dist
-        const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
+        // Dynamically import pdfjs-dist (standard build for Node.js)
+        const pdfjs = await import('pdfjs-dist/build/pdf.mjs');
+        const path = await import('path');
 
         // Configure worker for Node.js environment
-        // Setting it to dummy value forces main thread execution or fake worker usage
-        // preventing the "Cannot find module" error for the worker file
-        pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.mjs';
+        // Point to the actual worker file in node_modules
+        pdfjs.GlobalWorkerOptions.workerSrc = path.join(process.cwd(), 'node_modules/pdfjs-dist/build/pdf.worker.mjs');
 
-        // Polyfill standard browser APIs
-        // @ts-ignore
-        if (!global.DOMMatrix) global.DOMMatrix = class DOMMatrix { };
-        // @ts-ignore
-        if (!global.ImageData) global.ImageData = class ImageData { };
-        // @ts-ignore
-        if (!global.Path2D) global.Path2D = class Path2D { };
+        // Convert Buffer to Uint8Array
 
         // Convert Buffer to Uint8Array
         const uint8Array = new Uint8Array(pdfBuffer);

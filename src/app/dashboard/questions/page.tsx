@@ -95,7 +95,10 @@ export default function QuestionsPage() {
 
                                 <div className="flex flex-col items-end gap-2 text-gray-400">
                                     <div className="flex items-center gap-1 text-sm">
-                                        <ThumbsUp className="w-4 h-4" /> {q.upvotes}
+                                        <ThumbsUp className="w-4 h-4" />
+                                        <span className={`font-medium ${(q.upvotes - (q.downvotes || 0)) > 0 ? 'text-primary' : (q.upvotes - (q.downvotes || 0)) < 0 ? 'text-red-400' : 'text-gray-400'}`}>
+                                            {q.upvotes - (q.downvotes || 0)}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-1 text-sm">
                                         <MessageCircle className="w-4 h-4" /> {Array.isArray(q.answers) ? q.answers.length : (q as any).answers?.[0]?.count || 0}

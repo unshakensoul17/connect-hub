@@ -137,8 +137,8 @@ export function ChatDemo() {
                             )}
                             <div
                                 className={`max-w-[80%] p-4 rounded-2xl text-sm shadow-sm ${m.role === 'user'
-                                        ? 'bg-primary text-white ml-12 rounded-tr-none'
-                                        : 'bg-white/5 text-gray-200 border border-white/10 mr-12 rounded-tl-none'
+                                    ? 'bg-primary text-white ml-12 rounded-tr-none'
+                                    : 'bg-white/5 text-gray-200 border border-white/10 mr-12 rounded-tl-none'
                                     }`}
                             >
                                 <p className="whitespace-pre-wrap leading-relaxed">{m.content}</p>
@@ -212,7 +212,7 @@ export function ChatDemo() {
                 </div>
                 <p className="text-[10px] text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
                     <AlertCircle className="w-3 h-3 text-yellow-500/50" />
-                    This is a demo based on mock data. AI analysis is simulates here.
+                    This is a demo based on mock data. AI analysis is simulated here.
                 </p>
             </div>
         </div>

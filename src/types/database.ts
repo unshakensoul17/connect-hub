@@ -38,6 +38,7 @@ export interface Question {
     author?: Profile;
     tags: string[];
     upvotes: number;
+    downvotes: number;
     is_solved: boolean;
     created_at: string;
     answers?: Answer[]; // Joined count or array
@@ -50,6 +51,7 @@ export interface Answer {
     author_id: string;
     author?: Profile;
     upvotes: number;
+    downvotes: number;
     is_accepted: boolean;
     created_at: string;
 }
@@ -61,4 +63,22 @@ export interface Review {
     rating: number;
     comment?: string;
     created_at: string;
+}
+
+export interface QuestionVote {
+    id: string;
+    question_id: string;
+    user_id: string;
+    vote_type: 'up' | 'down';
+    created_at: string;
+    updated_at: string;
+}
+
+export interface AnswerVote {
+    id: string;
+    answer_id: string;
+    user_id: string;
+    vote_type: 'up' | 'down';
+    created_at: string;
+    updated_at: string;
 }
