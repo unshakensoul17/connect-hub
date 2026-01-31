@@ -1,5 +1,5 @@
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const API_URL = process.env.NEXT_PUBLIC_RAG_API_URL || "http://localhost:8000/api/v1";
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY || "your-secret-api-key-for-client-auth";
 
 interface IngestResponse {
